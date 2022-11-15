@@ -1,0 +1,213 @@
+import random
+print("BLACKJACK")
+game_check=0
+
+deck=[["A","J","Q","K",2,3,4,5,6,7,8,9,10],["A","J","Q","K",2,3,4,5,6,7,8,9,10],["A","J","Q","K",2,3,4,5,6,7,8,9,10],["A","J","Q","K",2,3,4,5,6,7,8,9,10]]
+full_deck=[["A","J","Q","K",2,3,4,5,6,7,8,9,10],["A","J","Q","K",2,3,4,5,6,7,8,9,10],["A","J","Q","K",2,3,4,5,6,7,8,9,10],["A","J","Q","K",2,3,4,5,6,7,8,9,10]]
+#deck=[[1],[1],[1],[1]]
+
+#Both
+def draw_type():
+    global x_type
+    x_type=random.randint(0,3)
+    global x_length
+    x_length = len(deck[x_type])
+#Player
+def value(a):
+    #print(a)
+    if(a in ["J","Q","K"]):
+        #print("J Q K")
+        a=10
+    elif(a in [1,2,3,4,5,6,7,8,9,10]):
+        #print("1 to 10")
+        a=a
+    elif(a=="A"):
+        #print("Ace")
+        llrol = input("11 or 1")
+        if(llrol=="1"):
+            a=1
+        elif(llrol=="11"):
+            a=11
+        else:
+            print("Invalid input, try again")
+            if(llrol==1):
+                a=1
+            elif(llrol==11):
+                a=11
+            else:
+                print("Still invalid, picking 1 then")
+                a=1
+    else:
+        print("something messed up")
+        a=9999
+    return a
+#AI
+def AI_value(a):
+    #print(a)
+    if(a in ["J","Q","K"]):
+        #print("J Q K")
+        a=10
+    elif(a in [1,2,3,4,5,6,7,8,9,10]):
+        #print("1 to 10")
+        a=a
+    elif(a=="A"):
+        if(AI_hand+11<=21):
+            a=11
+        else:
+            a=1
+    else:
+        print("something messed up")
+        a=9999
+    return a
+#Player
+def draw_card(x_type,x_length):
+    global player_hand
+    x_card=random.randint(0,x_length-1)
+    #print(x_type,x_card)
+    if(x_type==1):
+        print(deck[x_type][x_card], end="")
+        print(" of clubs")
+        added_value=value(deck[x_type][x_card])
+        player_hand=player_hand+added_value
+        #print("Points: ",player_hand)
+        del deck[x_type][x_card]
+    elif(x_type==2):
+        print(deck[x_type][x_card], end="")
+        print(" of diamonds")
+        added_value=value(deck[x_type][x_card])
+        player_hand=player_hand+added_value
+        #print("Points: ",player_hand)
+        del deck[x_type][x_card]
+    elif(x_type==3):
+        print(deck[x_type][x_card], end="")
+        print(" of hearts")
+        added_value=value(deck[x_type][x_card])
+        player_hand=player_hand+added_value
+        #print("Points: ",player_hand)
+        del deck[x_type][x_card]
+    else:
+        print(deck[x_type][x_card], end="")
+        print(" of spades")
+        added_value=value(deck[x_type][x_card])
+        player_hand=player_hand+added_value
+        #print("Points: ",player_hand)
+        del deck[x_type][x_card]
+#AI
+def AI_move(player_hand):
+    #print(deck)
+    global AI_hand
+    AI_hand = 0
+    while(AI_hand<=player_hand):
+        draw_type()
+        #print(x_length)
+        print(deck)
+        x_card=random.randint(0,x_length-1)
+        #print(x_type,x_card)
+        if(x_type==0):
+            print("AI: ",deck[x_type][x_card], end="")
+            print(" of clubs")
+            added_value=AI_value(deck[x_type][x_card])
+            AI_hand=AI_hand+added_value
+            #print("AI Points: ",AI_hand)
+            del deck[x_type][x_card]
+        elif(x_type==1):
+            print("AI: ",deck[x_type][x_card], end="")
+            print(" of diamonds")
+            added_value=AI_value(deck[x_type][x_card])
+            AI_hand=AI_hand+added_value
+            #print("AI Points: ",AI_hand)
+            del deck[x_type][x_card]
+        elif(x_type==2):
+            print("AI: ",deck[x_type][x_card], end="")
+            print(" of hearts")
+            added_value=AI_value(deck[x_type][x_card])
+            AI_hand=AI_hand+added_value
+            #print("AI Points: ",AI_hand)
+            del deck[x_type][x_card]
+        else:
+            print("AI: ",deck[x_type][x_card], end="")
+            print(" of spades")
+            added_value=AI_value(deck[x_type][x_card])
+            AI_hand=AI_hand+added_value
+            #print("AI Points: ",AI_hand)
+            del deck[x_type][x_card]
+
+
+anti_lag=0
+anti_error=0
+global player_hand
+player_hand=0
+player_points=0
+AI_points=0
+infinite_gaming=11111
+while infinite_gaming>0:
+    deck=[["A","J","Q","K",2,3,4,5,6,7,8,9,10],["A","J","Q","K",2,3,4,5,6,7,8,9,10],["A","J","Q","K",2,3,4,5,6,7,8,9,10],["A","J","Q","K",2,3,4,5,6,7,8,9,10]]
+    player_hand=0
+    AI_hand=0
+    #print(deck)
+    game_check=0
+    while game_check<=0:
+        move=input("d/s/c/exit?")
+        if(move=="d"):
+            
+            while(1>0):
+                anti_lag=anti_lag+1
+                draw_type()
+                if(x_length>=1):
+                    break
+                elif(anti_lag>=100):
+                    print("Out of cards?")
+                    game_check=1
+                    anti_error=1
+                    break
+                else:
+                    pass
+                
+            if(anti_error!=1):
+                draw_card(x_type,x_length)
+            if(player_hand>21):
+                print("Busted!")
+                AI_points=AI_points+1
+                deck=[["A","J","Q","K",2,3,4,5,6,7,8,9,10],["A","J","Q","K",2,3,4,5,6,7,8,9,10],["A","J","Q","K",2,3,4,5,6,7,8,9,10],["A","J","Q","K",2,3,4,5,6,7,8,9,10]]
+                break
+            elif(player_hand==21):
+                print("Blackjack!")
+                deck=[["A","J","Q","K",2,3,4,5,6,7,8,9,10],["A","J","Q","K",2,3,4,5,6,7,8,9,10],["A","J","Q","K",2,3,4,5,6,7,8,9,10],["A","J","Q","K",2,3,4,5,6,7,8,9,10]]
+                player_points=player_points+1
+                break
+            else:
+                pass
+        elif(move=="s"):
+            
+            print("stopped")
+            print(player_hand)
+            AI_move(player_hand)
+            while(1>0):
+                if(AI_hand>21):
+                    print("AI busted!")
+                    deck=[["A","J","Q","K",2,3,4,5,6,7,8,9,10],["A","J","Q","K",2,3,4,5,6,7,8,9,10],["A","J","Q","K",2,3,4,5,6,7,8,9,10],["A","J","Q","K",2,3,4,5,6,7,8,9,10]]
+                    player_points=player_points+1
+                    break
+                elif(AI_hand==player_hand):
+                    deck=[["A","J","Q","K",2,3,4,5,6,7,8,9,10],["A","J","Q","K",2,3,4,5,6,7,8,9,10],["A","J","Q","K",2,3,4,5,6,7,8,9,10],["A","J","Q","K",2,3,4,5,6,7,8,9,10]]
+                    print("draw")
+                    break
+                elif(AI_hand>player_hand and AI_hand<=21):
+                    deck=[["A","J","Q","K",2,3,4,5,6,7,8,9,10],["A","J","Q","K",2,3,4,5,6,7,8,9,10],["A","J","Q","K",2,3,4,5,6,7,8,9,10],["A","J","Q","K",2,3,4,5,6,7,8,9,10]]
+                    print("AI won!")
+                    AI_points=AI_points+1
+                    break
+                else:
+                    print("You won!")
+                    deck=[["A","J","Q","K",2,3,4,5,6,7,8,9,10],["A","J","Q","K",2,3,4,5,6,7,8,9,10],["A","J","Q","K",2,3,4,5,6,7,8,9,10],["A","J","Q","K",2,3,4,5,6,7,8,9,10]]
+                    player_points=player_points+1
+                    break
+            player_hand=0
+        elif(move=="c"):
+            print("PLAYER: ",player_points," AI: ",AI_points)
+        elif(move=="exit"):
+            game_check=1
+        else:
+            print("invalid input")
+            pass
+    
